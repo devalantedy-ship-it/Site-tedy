@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #0e1220;
+  --color-panel: #161c2e;
+  --color-panel-2: #1d2540;
+  --color-line: #2a3354;
+  --color-ink: #e9ecf7;
+  --color-mute: #8d96b8;
+  --color-volt: #ffd23f; /* destaque principal */
+  --color-sell: #ff5d5d; /* anúncios de venda */
+  --color-buy: #38d6c4; /* pedidos de compra */
+  --color-ok: #5ee08a;
+  --font-sans: var(--font-manrope), system-ui, sans-serif;
+  --font-pixel: var(--font-pixelify), monospace;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background:
+    radial-gradient(1200px 500px at 85% -10%, #26306055, transparent 60%),
+    radial-gradient(900px 400px at -10% 10%, #3b2a5a40, transparent 60%),
+    var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  min-height: 100dvh;
+}
+
+.dots {
+  background-image: radial-gradient(#ffffff10 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+
+@layer components {
+.field {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid var(--color-line);
+  background: var(--color-bg);
+  padding: 0.65rem 0.85rem;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.field:focus {
+  border-color: var(--color-volt);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  padding: 0.65rem 1.1rem;
+  font-weight: 700;
+  font-size: 0.92rem;
+  transition: transform 0.1s, background 0.15s, opacity 0.15s;
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btn-volt {
+  background: var(--color-volt);
+  color: #1a1400;
+  box-shadow: 0 3px 0 #b8901c;
+}
+.btn-volt:hover {
+  background: #ffdd66;
+}
+.btn-ghost {
+  border: 1px solid var(--color-line);
+  background: var(--color-panel);
+}
+.btn-ghost:hover {
+  background: var(--color-panel-2);
+}
+.btn-wa {
+  background: #25d366;
+  color: #062b14;
+  box-shadow: 0 3px 0 #1a9a4a;
+}
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+.rise {
+  animation: rise 0.35s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rise {
+    animation: none;
+  }
+}
