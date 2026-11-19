@@ -62,7 +62,7 @@ function ListingPage() {
       <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
         <article className="rounded-3xl glass p-6">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
-            <CatTile id={l.category} size={96} shiny={l.shiny} />
+            <CatTile id={l.category} size={150} l={l} bob />
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
                 <KindBadge kind={l.kind} />

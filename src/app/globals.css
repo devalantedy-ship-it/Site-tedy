@@ -1,19 +1,20 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #070914;
-  --color-panel: rgb(17 21 42 / 0.72);
-  --color-panel-2: rgb(30 36 70 / 0.85);
-  --color-line: rgb(120 132 200 / 0.18);
-  --color-ink: #eef0ff;
-  --color-mute: #9aa3cc;
-  --color-volt: #ffd23f;
-  --color-sell: #ff5d8f;
-  --color-buy: #38e0d0;
-  --color-ok: #5ee08a;
-  --color-violet: #a98bff;
+  --color-bg: #0b2440;
+  --color-panel: rgb(10 34 60 / 0.8);
+  --color-panel-2: rgb(26 64 100 / 0.75);
+  --color-line: rgb(251 233 214 / 0.16);
+  --color-ink: #fbeedd;
+  --color-mute: #a9c0d4;
+  --color-volt: #ffbe76; /* dourado do sol: preços e destaques */
+  --color-sell: #f37665; /* coral */
+  --color-buy: #6fd3d8; /* espuma turquesa */
+  --color-ok: #8fe3a6;
+  --color-violet: #ff9fb0;
+  --color-crimson: #ba2a46;
   --font-sans: var(--font-manrope), system-ui, sans-serif;
-  --font-pixel: var(--font-pixelify), monospace;
+  --font-pixel: var(--font-display), serif;
 }
 
 html {
@@ -28,27 +29,46 @@ body {
 }
 
 ::selection {
-  background: var(--color-volt);
-  color: #1a1400;
+  background: var(--color-sell);
+  color: #fff;
 }
 
 /* ---------- fundo ---------- */
-.aurora {
-  background:
-    radial-gradient(40% 35% at 15% 10%, rgb(169 139 255 / 0.35), transparent 70%),
-    radial-gradient(35% 30% at 85% 5%, rgb(56 224 208 / 0.22), transparent 70%),
-    radial-gradient(50% 40% at 50% 70%, rgb(255 93 143 / 0.18), transparent 70%),
-    linear-gradient(#070914, #0c0b24 60%, #12082a);
-  animation: aurora 18s ease-in-out infinite alternate;
-  background-size: 140% 140%;
+.kenburns {
+  animation: kenburns 40s ease-in-out infinite alternate;
 }
-@keyframes aurora {
-  0% { background-position: 0% 0%; }
-  100% { background-position: 100% 60%; }
+@keyframes kenburns {
+  from { transform: scale(1) translateX(0); }
+  to { transform: scale(1.08) translateX(-1.5%); }
 }
-.scanlines {
-  background: repeating-linear-gradient(to bottom, rgb(255 255 255 / 0.025) 0 1px, transparent 1px 3px);
-  mix-blend-mode: overlay;
+
+/* Magikarp pulando da água: fica escondido a maior parte do tempo e dá um salto em arco */
+.karp {
+  opacity: 0;
+  animation: karp 8s ease-in-out infinite;
+}
+@keyframes karp {
+  0%, 62% { opacity: 0; transform: translate(0, 30px) rotate(20deg); }
+  66% { opacity: 1; transform: translate(10px, 0) rotate(-20deg); }
+  78% { opacity: 1; transform: translate(50px, -90px) rotate(0deg); }
+  90% { opacity: 1; transform: translate(90px, 0) rotate(30deg); }
+  94%, 100% { opacity: 0; transform: translate(100px, 30px) rotate(40deg); }
+}
+
+/* textura de papel */
+.paper {
+  background-image: radial-gradient(rgb(255 255 255 / 0.5) 1px, transparent 1px);
+  background-size: 3px 3px;
+}
+
+/* padrão de ondas japonês (seigaiha) */
+.seigaiha {
+  --c: rgb(251 233 214 / 0.07);
+  background-image:
+    radial-gradient(circle at 100% 150%, transparent 24%, var(--c) 25%, var(--c) 28%, transparent 29%, transparent 36%, var(--c) 37%, var(--c) 40%, transparent 41%, transparent 48%, var(--c) 49%, var(--c) 52%, transparent 53%),
+    radial-gradient(circle at 0 150%, transparent 24%, var(--c) 25%, var(--c) 28%, transparent 29%, transparent 36%, var(--c) 37%, var(--c) 40%, transparent 41%, transparent 48%, var(--c) 49%, var(--c) 52%, transparent 53%),
+    radial-gradient(circle at 50% 100%, transparent 24%, var(--c) 25%, var(--c) 28%, transparent 29%, transparent 36%, var(--c) 37%, var(--c) 40%, transparent 41%, transparent 48%, var(--c) 49%, var(--c) 52%, transparent 53%);
+  background-size: 48px 24px;
 }
 
 /* ---------- componentes ---------- */
@@ -64,7 +84,7 @@ body {
     width: 100%;
     border-radius: 0.75rem;
     border: 1px solid var(--color-line);
-    background: rgb(7 9 20 / 0.7);
+    background: rgb(6 24 44 / 0.7);
     padding: 0.65rem 0.85rem;
     font-size: 0.95rem;
     outline: none;
@@ -72,7 +92,7 @@ body {
   }
   .field:focus {
     border-color: var(--color-volt);
-    box-shadow: 0 0 0 3px rgb(255 210 63 / 0.15);
+    box-shadow: 0 0 0 3px rgb(255 190 118 / 0.18);
   }
 
   .btn {
@@ -91,25 +111,26 @@ body {
     transform: translateY(2px);
   }
   .btn-volt {
-    background: linear-gradient(180deg, #ffe27a, #ffc21f);
-    color: #1a1400;
-    box-shadow: 0 4px 0 #a67a0c, 0 0 24px rgb(255 210 63 / 0.35);
+    background: linear-gradient(180deg, #ff8f74, #e5503f);
+    color: #fff8ee;
+    box-shadow: 0 4px 0 #8e2632, 0 10px 30px -8px rgb(243 118 101 / 0.7);
+    text-shadow: 0 1px 0 #8e263288;
   }
   .btn-volt:hover {
-    box-shadow: 0 4px 0 #a67a0c, 0 0 36px rgb(255 210 63 / 0.6);
     transform: translateY(-1px);
+    box-shadow: 0 5px 0 #8e2632, 0 14px 36px -8px rgb(243 118 101 / 0.9);
   }
   .btn-volt:active {
-    box-shadow: 0 2px 0 #a67a0c, 0 0 24px rgb(255 210 63 / 0.4);
+    box-shadow: 0 2px 0 #8e2632;
   }
   .btn-ghost {
     border: 1px solid var(--color-line);
-    background: rgb(17 21 42 / 0.6);
+    background: rgb(10 34 60 / 0.6);
     backdrop-filter: blur(8px);
   }
   .btn-ghost:hover {
     background: var(--color-panel-2);
-    border-color: rgb(255 210 63 / 0.4);
+    border-color: rgb(255 190 118 / 0.5);
   }
   .btn-wa {
     background: linear-gradient(180deg, #4be38a, #22c35e);
@@ -130,7 +151,7 @@ body {
     inset: 0;
     border-radius: inherit;
     z-index: -1;
-    background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgb(255 210 63 / 0.16), transparent 60%);
+    background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgb(255 190 118 / 0.16), transparent 60%);
     opacity: 0;
     transition: opacity 0.2s;
   }
@@ -138,8 +159,8 @@ body {
     opacity: 1;
   }
   .holo:hover {
-    border-color: rgb(255 210 63 / 0.5);
-    box-shadow: 0 18px 50px -18px rgb(255 210 63 / 0.35);
+    border-color: rgb(243 118 101 / 0.6);
+    box-shadow: 0 18px 50px -18px rgb(243 118 101 / 0.55);
   }
   /* shiny: borda arco-íris girando */
   .shiny-border {
@@ -147,7 +168,7 @@ body {
     inset: -1px;
     border-radius: inherit;
     padding: 1px;
-    background: conic-gradient(from var(--ang), #ffd23f, #ff5d8f, #a98bff, #38e0d0, #ffd23f);
+    background: conic-gradient(from var(--ang), #ffbe76, #f37665, #ba2a46, #6fd3d8, #ffbe76);
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
@@ -167,7 +188,7 @@ body {
 
 /* texto com degradê andando */
 .text-shine {
-  background: linear-gradient(90deg, #ffd23f, #ff5d8f, #a98bff, #38e0d0, #ffd23f);
+  background: linear-gradient(90deg, #ffbe76, #f37665, #ff9fb0, #f37665, #ffbe76);
   background-size: 300% 100%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -179,7 +200,7 @@ body {
 }
 
 .glow-text {
-  text-shadow: 0 0 18px rgb(255 210 63 / 0.55), 0 3px 0 #000a;
+  text-shadow: 0 0 18px rgb(255 190 118 / 0.45), 0 2px 0 #0008;
 }
 
 /* flutuar */
@@ -207,7 +228,7 @@ body {
   to { transform: translateX(-50%); }
 }
 
-.pixel-corners {
+.pixel-corners-old {
   clip-path: polygon(
     0 8px, 4px 8px, 4px 4px, 8px 4px, 8px 0,
     calc(100% - 8px) 0, calc(100% - 8px) 4px, calc(100% - 4px) 4px, calc(100% - 4px) 8px, 100% 8px,
@@ -233,7 +254,7 @@ body {
 .pop { animation: pop 0.25s cubic-bezier(.2,.8,.2,1); }
 
 @media (prefers-reduced-motion: reduce) {
-  .rise, .pop, .float, .float-2, .float-3, .bob, .marquee, .aurora, .text-shine, .shiny-border {
+  .rise, .pop, .float, .float-2, .float-3, .bob, .marquee, .kenburns, .karp, .text-shine, .shiny-border {
     animation: none !important;
   }
 }

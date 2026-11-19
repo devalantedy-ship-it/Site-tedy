@@ -4,10 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { LogOut, Menu, MessageCircle, Plus, UserRound, X } from "lucide-react";
-import { site } from "@/lib/data";
 import { useMarket, useUnread } from "@/lib/store";
 import { Avatar } from "./ui";
-import { Sprite } from "./Sprite";
+import { artwork } from "@/lib/poke";
 
 const nav = [
   { href: "/anuncios?tipo=venda", label: "Comprar" },
@@ -18,8 +17,9 @@ const nav = [
 export function Logo() {
   return (
     <Link href="/" className="flex items-center gap-2">
-      <span className="pixel-corners grid h-10 w-10 place-items-center bg-volt/15 shadow-[inset_0_0_0_1px_#ffd23f55]">
-        <Sprite id="pokemon" size={30} className="bob" />
+      <span className="seigaiha grid h-11 w-11 place-items-center rounded-full bg-linear-to-b from-[#1d4d78] to-[#0d2c4c] shadow-[inset_0_0_0_2px_rgb(251_233_214/0.3)]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={artwork(129)} alt="" className="h-12 w-12 max-w-none -rotate-12 drop-shadow-[0_3px_3px_#0008]" />
       </span>
       <span className="font-pixel text-2xl leading-none tracking-wide">
         Poke<span className="text-shine">Feira</span>

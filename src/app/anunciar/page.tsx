@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { categories, servers, type CategoryId, type Currency, type Kind, type Server } from "@/lib/data";
 import { fmtPrice, useMarket } from "@/lib/store";
 import { CatTile, KindBadge } from "@/components/ui";
+import { PokemonPicker } from "@/components/PokemonPicker";
+import { commonItems, itemSprite, prettyName } from "@/lib/poke";
 
 export default function Page() {
   return (
@@ -33,6 +35,8 @@ function NewListing() {
   const [boost, setBoost] = useState("");
   const [shiny, setShiny] = useState(false);
   const [heldItem, setHeldItem] = useState("");
+  const [dex, setDex] = useState<number | undefined>();
+  const [item, setItem] = useState("");
 
   useEffect(() => {
     if (m.ready && !m.me) router.replace("/entrar?volta=/anunciar");
@@ -59,7 +63,8 @@ function NewListing() {
       negotiable,
       showWhatsapp: showWhatsapp && !!(m.me!.whatsapp || wa.replace(/\D/g, "")),
       ...(isPoke || category === "char" ? { level: Number(level) || undefined } : {}),
-      ...(isPoke ? { boost: boost === "" ? undefined : Number(boost), shiny, heldItem: heldItem.trim() || undefined } : {}),
+      ...(isPoke ? { dex, boost: boost === "" ? undefined : Number(boost), shiny, heldItem: heldItem.trim() || undefined } : {}),
+      ...(category === "item" && item ? { item } : {}),
     });
     if (id) router.push(`/anuncio?id=${id}`);
   };
@@ -117,6 +122,26 @@ function NewListing() {
             />
           </label>
 
+          {isPoke && <PokemonPicker dex={dex} shiny={shiny} onPick={(d, name) => { setDex(d); if (!title) setTitle((shiny ? "Shiny " : "") + name); }} />}
+          {category === "item" && (
+            <div>
+              <div className="mb-2 text-sm font-semibold">Imagem do item <span className="font-normal text-mute">(opcional)</span></div>
+              <div className="grid grid-cols-6 gap-1.5 sm:grid-cols-8">
+                {commonItems.map((it) => (
+                  <button
+                    type="button"
+                    key={it}
+                    title={prettyName(it)}
+                    onClick={() => setItem(item === it ? "" : it)}
+                    className={`grid aspect-square place-items-center rounded-xl border transition ${item === it ? "border-sell bg-sell/15" : "border-line hover:bg-panel-2"}`}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={itemSprite(it)} alt={prettyName(it)} className="h-8 w-8 [image-rendering:pixelated]" loading="lazy" />
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
           {isPoke && (
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               <label className="text-sm">
@@ -132,7 +157,7 @@ function NewListing() {
                 <input value={heldItem} onChange={(e) => setHeldItem(e.target.value)} className="field" placeholder="Ex.: X-Attack T5" />
               </label>
               <label className="col-span-2 flex items-center gap-2 text-sm">
-                <input type="checkbox" checked={shiny} onChange={(e) => setShiny(e.target.checked)} className="accent-[#ffd23f]" /> É shiny
+                <input type="checkbox" checked={shiny} onChange={(e) => setShiny(e.target.checked)} className="accent-[#f37665]" /> É shiny
               </label>
             </div>
           )}
@@ -180,11 +205,11 @@ function NewListing() {
 
           <div className="flex flex-col gap-3 rounded-2xl bg-panel-2 p-4 text-sm">
             <label className="flex items-center gap-2">
-              <input type="checkbox" checked={negotiable} onChange={(e) => setNegotiable(e.target.checked)} className="accent-[#ffd23f]" />
+              <input type="checkbox" checked={negotiable} onChange={(e) => setNegotiable(e.target.checked)} className="accent-[#f37665]" />
               Aceito propostas
             </label>
             <label className="flex items-center gap-2">
-              <input type="checkbox" checked={showWhatsapp} onChange={(e) => setShowWhatsapp(e.target.checked)} className="accent-[#ffd23f]" />
+              <input type="checkbox" checked={showWhatsapp} onChange={(e) => setShowWhatsapp(e.target.checked)} className="accent-[#f37665]" />
               Mostrar botão “Chamar no WhatsApp”
             </label>
             {showWhatsapp && !m.me.whatsapp && (
@@ -201,7 +226,7 @@ function NewListing() {
           <div className="mb-2 text-xs font-bold uppercase tracking-wider text-mute">Prévia</div>
           <div className="flex flex-col gap-3 rounded-2xl glass p-4">
             <div className="flex items-start gap-3">
-              <CatTile id={category} shiny={isPoke && shiny} />
+              <CatTile id={category} size={64} l={{ category, dex: isPoke ? dex : undefined, item: category === "item" ? item || undefined : undefined, shiny: isPoke && shiny }} />
               <div className="min-w-0">
                 <div className="mb-1 flex items-center gap-1.5">
                   <KindBadge kind={kind} />

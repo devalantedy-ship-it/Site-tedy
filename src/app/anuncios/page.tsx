@@ -102,11 +102,11 @@ function Listings() {
             {chip("moeda", "KK", "KK", moeda)}
           </Group>
           <label className="flex items-center gap-2 text-sm">
-            <input type="checkbox" checked={shiny} onChange={(e) => set("shiny", e.target.checked ? "1" : "")} className="accent-[#ffd23f]" />
+            <input type="checkbox" checked={shiny} onChange={(e) => set("shiny", e.target.checked ? "1" : "")} className="accent-[#f37665]" />
             Só shiny
           </label>
           <label className="flex items-center gap-2 text-sm">
-            <input type="checkbox" checked={fechados} onChange={(e) => set("fechados", e.target.checked ? "1" : "")} className="accent-[#ffd23f]" />
+            <input type="checkbox" checked={fechados} onChange={(e) => set("fechados", e.target.checked ? "1" : "")} className="accent-[#f37665]" />
             Mostrar concluídos
           </label>
           <button onClick={() => router.replace(path)} className="text-left text-xs text-mute underline">

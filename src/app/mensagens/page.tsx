@@ -129,7 +129,7 @@ function Chat({ c }: { c: Conversation }) {
           <ArrowLeft size={18} />
         </Link>
         <Link href={`/anuncio?id=${l.id}`} className="flex min-w-0 flex-1 items-center gap-3">
-          <CatTile id={l.category} size={40} shiny={l.shiny} />
+          <CatTile id={l.category} size={44} l={l} />
           <div className="min-w-0">
             <div className="flex items-center gap-1.5">
               <KindBadge kind={l.kind} />

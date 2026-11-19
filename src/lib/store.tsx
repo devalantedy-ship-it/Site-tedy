@@ -24,7 +24,7 @@ type State = {
   meId: string | null;
 };
 
-const KEY = "pokefeira-proto-v1";
+const KEY = "pokefeira-proto-v2";
 const initial: State = {
   users: seedUsers,
   listings: seedListings,

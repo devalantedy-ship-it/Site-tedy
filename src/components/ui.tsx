@@ -2,30 +2,52 @@
 
 import Link from "next/link";
 import { Sparkles, Star } from "lucide-react";
-import { Sprite } from "./Sprite";
+import { artwork, categoryArt, itemSprite } from "@/lib/poke";
 import { categories, type CategoryId, type Listing, type User } from "@/lib/data";
 import { fmtPrice, useMarket } from "@/lib/store";
-
-const catColor: Record<CategoryId, string> = {
-  pokemon: "from-[#ff8a3d]/35 to-[#e2436b]/25 shadow-[0_0_24px_-6px_#ff8a3d]",
-  item: "from-[#3fb6ff]/35 to-[#7b6cff]/25 shadow-[0_0_24px_-6px_#3fb6ff]",
-  char: "from-[#ff4f5e]/30 to-[#3d7bff]/30 shadow-[0_0_24px_-6px_#3d7bff]",
-  kk: "from-[#ffd23f]/35 to-[#f08a1c]/25 shadow-[0_0_24px_-6px_#ffd23f]",
-  servico: "from-[#b8c4e6]/25 to-[#5b6487]/30 shadow-[0_0_24px_-6px_#b8c4e6]",
-};
 
 export function catLabel(id: CategoryId) {
   return categories.find((c) => c.id === id)?.label ?? id;
 }
 
-export function CatTile({ id, size = 56, shiny, bob }: { id: CategoryId; size?: number; shiny?: boolean; bob?: boolean }) {
+/** Imagem do anúncio: arte oficial do pokémon, sprite do item, ou a imagem da categoria. */
+export function listingArt(l: Pick<Listing, "category" | "dex" | "item" | "shiny">) {
+  if (l.dex) return { src: artwork(l.dex, !!l.shiny), pixel: false };
+  if (l.item) return { src: itemSprite(l.item), pixel: true };
+  return { src: categoryArt[l.category], pixel: l.category !== "pokemon" };
+}
+
+/** Medalhão redondo com a imagem (estilo carimbo/hanko, com ondas no fundo). */
+export function CatTile({
+  id,
+  size = 56,
+  shiny,
+  bob,
+  l,
+}: {
+  id: CategoryId;
+  size?: number;
+  shiny?: boolean;
+  bob?: boolean;
+  l?: Pick<Listing, "category" | "dex" | "item" | "shiny">;
+}) {
+  const art = listingArt(l ?? { category: id, shiny });
   return (
     <div
-      className={`pixel-corners relative grid shrink-0 place-items-center bg-linear-to-br ${catColor[id]} dots`}
+      className="seigaiha relative grid shrink-0 place-items-center rounded-full bg-linear-to-b from-[#1d4d78] to-[#0d2c4c] shadow-[inset_0_0_0_2px_rgb(251_233_214/0.25),0_8px_20px_-8px_#000]"
       style={{ width: size, height: size }}
     >
-      <Sprite id={id} size={size * 0.72} className={`drop-shadow-[0_2px_0_#0008] ${bob ? "bob" : ""}`} />
-      {shiny && <Sparkles className="absolute right-0.5 top-0.5 text-volt drop-shadow-[0_0_6px_#ffd23f]" size={Math.max(12, size * 0.26)} />}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={art.src}
+        alt=""
+        loading="lazy"
+        className={`${art.pixel ? "[image-rendering:pixelated]" : ""} ${bob ? "float" : ""} drop-shadow-[0_6px_6px_rgb(0_0_0/0.45)]`}
+        style={{ width: size * (art.pixel ? 0.78 : 1.12), height: size * (art.pixel ? 0.78 : 1.12), objectFit: "contain", maxWidth: "none" }}
+      />
+      {(shiny ?? l?.shiny) && (
+        <Sparkles className="absolute -right-0.5 -top-0.5 text-volt drop-shadow-[0_0_6px_#ffbe76]" size={Math.max(12, size * 0.26)} />
+      )}
     </div>
   );
 }
@@ -121,7 +143,7 @@ export function ListingCard({ l, i = 0 }: { l: Listing; i?: number }) {
       {l.shiny && l.status !== "concluido" && <span className="shiny-border" />}
       <span className={`absolute inset-x-0 top-0 h-px bg-linear-to-r ${accent} via-transparent to-transparent`} />
       <div className="flex items-start gap-3">
-        <CatTile id={l.category} shiny={l.shiny} />
+        <CatTile id={l.category} l={l} size={64} />
         <div className="min-w-0 flex-1">
           <div className="mb-1 flex flex-wrap items-center gap-1.5">
             <KindBadge kind={l.kind} />

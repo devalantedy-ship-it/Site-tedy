@@ -7,7 +7,7 @@ import { ArrowRight, Handshake, MessageCircle, Search, ShieldCheck, Zap } from "
 import { categories, servers, type Listing } from "@/lib/data";
 import { fmtPrice, useMarket } from "@/lib/store";
 import { CatTile, KindBadge, ListingCard, holoHandlers } from "@/components/ui";
-import { Sprite } from "@/components/Sprite";
+import { artwork } from "@/lib/poke";
 
 export default function Home() {
   const { listings, users } = useMarket();
@@ -31,19 +31,19 @@ export default function Home() {
             </span>
             AO VIVO · {active.length} anúncios rolando
           </span>
-          <h1 className="rise mt-5 font-pixel text-5xl leading-[0.95] sm:text-6xl lg:text-7xl" style={{ animationDelay: "60ms" }}>
+          <h1 className="rise mt-5 font-pixel text-5xl leading-[1.02] [text-shadow:0_3px_0_#0b2440,0_0_30px_rgb(11_36_64/0.9)] sm:text-6xl lg:text-7xl" style={{ animationDelay: "60ms" }}>
             O mercado dos
             <br />
-            <span className="text-shine">treinadores</span>
+            <span className="text-shine drop-shadow-[0_3px_0_#0b2440] [text-shadow:none]">treinadores</span>
             <br />
-            <span className="text-mute/70">de Poketibia.</span>
+            <span className="text-ink">de Poketibia.</span>
           </h1>
-          <p className="rise mt-5 max-w-lg text-lg text-mute" style={{ animationDelay: "120ms" }}>
+          <p className="rise mt-5 max-w-lg text-lg text-ink/90 [text-shadow:0_1px_8px_#0b2440]" style={{ animationDelay: "120ms" }}>
             Shiny, held, stones, chars e KK. Anuncie, faça proposta, feche no chat ou no WhatsApp.
           </p>
 
           <form
-            className="rise glass mt-7 flex max-w-xl gap-2 rounded-2xl p-2 shadow-[0_0_60px_-20px_#ffd23f]"
+            className="rise glass mt-7 flex max-w-xl gap-2 rounded-2xl p-2 shadow-[0_0_60px_-20px_#f37665]"
             style={{ animationDelay: "180ms" }}
             onSubmit={(e) => {
               e.preventDefault();
@@ -169,9 +169,10 @@ export default function Home() {
         <div className="dots pointer-events-none absolute inset-0 opacity-50" />
         <div className="relative mx-auto flex max-w-xl flex-col items-center">
           <div className="flex gap-3">
-            {(["pokemon", "item", "kk"] as const).map((id, i) => (
-              <span key={id} className={i === 1 ? "float-2" : i === 2 ? "float-3" : "float"}>
-                <Sprite id={id} size={56} />
+            {[129, 130, 129].map((dex, i) => (
+              <span key={i} className={i === 1 ? "float-2" : i === 2 ? "float-3" : "float"}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={artwork(dex, i === 2)} alt="" className={i === 1 ? "h-28 w-28" : "h-16 w-16 self-end"} />
               </span>
             ))}
           </div>
@@ -221,7 +222,7 @@ function ShowcaseCard({ l, i }: { l: Listing; i: number }) {
     >
       {l.shiny && <span className="shiny-border" />}
       <div className="flex items-center gap-3">
-        <CatTile id={l.category} size={64} shiny={l.shiny} bob />
+        <CatTile id={l.category} size={80} l={l} bob />
         <div className="min-w-0">
           <KindBadge kind={l.kind} />
           <div className="mt-1 line-clamp-2 font-bold leading-tight">{l.title}</div>
