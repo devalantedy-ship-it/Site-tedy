@@ -30,7 +30,7 @@ export default function MyAccount() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[300px_1fr]">
-      <aside className="flex flex-col gap-4 self-start rounded-3xl border border-line bg-panel p-5">
+      <aside className="flex flex-col gap-4 self-start rounded-3xl glass p-5">
         <div className="flex items-center gap-3">
           <Avatar user={m.me} size={56} />
           <div>

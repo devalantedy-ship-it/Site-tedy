@@ -23,7 +23,7 @@ export default function HowItWorks() {
       <h1 className="font-pixel text-4xl">Como funciona</h1>
       <ol className="mt-8 flex flex-col gap-4">
         {steps.map(([t, d], i) => (
-          <li key={t} className="flex gap-4 rounded-2xl border border-line bg-panel p-5">
+          <li key={t} className="flex gap-4 rounded-2xl glass p-5">
             <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-volt font-pixel text-xl text-bg">{i + 1}</span>
             <div>
               <h2 className="font-bold">{t}</h2>
@@ -35,7 +35,7 @@ export default function HowItWorks() {
       <h2 id="seguranca" className="mt-12 scroll-mt-24 font-pixel text-2xl">Dicas de segurança</h2>
       <ul className="mt-4 flex flex-col gap-2">
         {tips.map((t) => (
-          <li key={t} className="rounded-xl border border-line bg-panel px-4 py-3 text-sm">{t}</li>
+          <li key={t} className="rounded-xl glass px-4 py-3 text-sm">{t}</li>
         ))}
       </ul>
       <div className="mt-10 flex gap-2">

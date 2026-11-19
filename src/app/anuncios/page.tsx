@@ -77,7 +77,7 @@ function Listings() {
       <p className="mt-1 text-sm text-mute">{list.length} resultado{list.length === 1 ? "" : "s"}</p>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-[260px_1fr]">
-        <aside className={`${showF ? "flex" : "hidden"} lg:flex flex-col gap-5 self-start rounded-2xl border border-line bg-panel p-4 lg:sticky lg:top-20`}>
+        <aside className={`${showF ? "flex" : "hidden"} lg:flex flex-col gap-5 self-start rounded-2xl glass p-4 lg:sticky lg:top-20`}>
           <div className="flex items-center gap-2 font-bold">
             <SlidersHorizontal size={16} /> Filtros
           </div>

@@ -30,7 +30,7 @@ function Login() {
 
   return (
     <div className="mx-auto max-w-md py-6">
-      <div className="rounded-3xl border border-line bg-panel p-7">
+      <div className="rounded-3xl glass p-7">
         <h1 className="font-pixel text-3xl">Entrar</h1>
         <p className="mt-1 text-sm text-mute">Use o nick do seu personagem. É ele que aparece nos anúncios.</p>
 
@@ -70,7 +70,7 @@ function Login() {
         </p>
       </div>
 
-      <div className="mt-6 rounded-3xl border border-line bg-panel p-5">
+      <div className="mt-6 rounded-3xl glass p-5">
         <div className="text-sm font-bold">Testar como outro jogador</div>
         <p className="text-xs text-mute">Entre como um dos jogadores de exemplo pra ver os dois lados da negociação.</p>
         <div className="mt-3 flex flex-wrap gap-2">

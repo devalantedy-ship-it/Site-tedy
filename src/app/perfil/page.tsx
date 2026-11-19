@@ -25,7 +25,7 @@ function ProfilePage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <section className="flex flex-col gap-5 rounded-3xl border border-line bg-panel p-6 sm:flex-row sm:items-center">
+      <section className="flex flex-col gap-5 rounded-3xl glass p-6 sm:flex-row sm:items-center">
         <Avatar user={u} size={80} />
         <div className="flex-1">
           <h1 className="font-pixel text-3xl">{u.nick}</h1>
@@ -64,7 +64,7 @@ function ProfilePage() {
           {reviews.map((r) => {
             const from = m.userById(r.fromUserId);
             return (
-              <div key={r.id} className="rounded-2xl border border-line bg-panel p-4">
+              <div key={r.id} className="rounded-2xl glass p-4">
                 <div className="flex items-center gap-2">
                   <Avatar user={from} size={28} />
                   <span className="text-sm font-semibold">{from?.nick}</span>

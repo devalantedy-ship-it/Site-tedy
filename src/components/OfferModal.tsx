@@ -26,7 +26,7 @@ export function OfferModal({
           e.preventDefault();
           if (n > 0) onSend(n, cur, text.trim());
         }}
-        className="rise w-full max-w-sm rounded-3xl border border-line bg-panel p-6"
+        className="rise w-full max-w-sm rounded-3xl glass p-6"
       >
         <h3 className="font-pixel text-2xl">Fazer proposta</h3>
         <p className="mt-1 text-sm text-mute">O outro jogador pode aceitar, recusar ou responder no chat.</p>

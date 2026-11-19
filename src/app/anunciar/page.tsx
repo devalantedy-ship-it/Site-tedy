@@ -70,7 +70,7 @@ function NewListing() {
       <p className="mt-1 text-sm text-mute">Venda o que você tem ou avise o que está procurando.</p>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_280px]">
-        <form onSubmit={submit} className="flex flex-col gap-6 rounded-3xl border border-line bg-panel p-6">
+        <form onSubmit={submit} className="flex flex-col gap-6 rounded-3xl glass p-6">
           <div className="grid grid-cols-2 gap-2">
             {(["venda", "compra"] as Kind[]).map((k) => (
               <button
@@ -199,7 +199,7 @@ function NewListing() {
 
         <aside className="self-start lg:sticky lg:top-20">
           <div className="mb-2 text-xs font-bold uppercase tracking-wider text-mute">Prévia</div>
-          <div className="flex flex-col gap-3 rounded-2xl border border-line bg-panel p-4">
+          <div className="flex flex-col gap-3 rounded-2xl glass p-4">
             <div className="flex items-start gap-3">
               <CatTile id={category} shiny={isPoke && shiny} />
               <div className="min-w-0">

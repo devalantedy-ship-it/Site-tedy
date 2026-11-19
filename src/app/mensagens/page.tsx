@@ -40,7 +40,7 @@ function Inbox() {
   return (
     <div>
       <h1 className="font-pixel text-3xl">Negociações</h1>
-      <div className="mt-5 grid h-[calc(100dvh-12rem)] min-h-[480px] overflow-hidden rounded-3xl border border-line bg-panel md:grid-cols-[300px_1fr]">
+      <div className="mt-5 grid h-[calc(100dvh-12rem)] min-h-[480px] overflow-hidden rounded-3xl glass md:grid-cols-[300px_1fr]">
         <ul className={`overflow-y-auto border-line md:border-r ${current ? "hidden md:block" : ""}`}>
           {mine.length === 0 && (
             <li className="p-6 text-sm text-mute">
@@ -281,7 +281,7 @@ function ReviewModal({ nick, onClose, onSend }: { nick: string; onClose: () => v
           e.preventDefault();
           onSend(stars, text.trim());
         }}
-        className="rise w-full max-w-sm rounded-3xl border border-line bg-panel p-6"
+        className="rise w-full max-w-sm rounded-3xl glass p-6"
       >
         <h3 className="font-pixel text-2xl">Avaliar {nick}</h3>
         <div className="mt-4 flex gap-1">

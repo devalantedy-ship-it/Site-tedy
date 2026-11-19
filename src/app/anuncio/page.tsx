@@ -60,7 +60,7 @@ function ListingPage() {
       </button>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
-        <article className="rounded-3xl border border-line bg-panel p-6">
+        <article className="rounded-3xl glass p-6">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
             <CatTile id={l.category} size={96} shiny={l.shiny} />
             <div className="min-w-0 flex-1">
@@ -103,7 +103,7 @@ function ListingPage() {
         </article>
 
         <aside className="flex flex-col gap-4 self-start lg:sticky lg:top-20">
-          <div className="rounded-3xl border border-line bg-panel p-5">
+          <div className="rounded-3xl glass p-5">
             <div className="text-xs text-mute">{l.kind === "compra" ? "Paga até" : "Preço"}</div>
             <div className="font-pixel text-4xl text-volt">{fmtPrice(l.price, l.currency)}</div>
             {l.category === "kk" && l.currency === "R$" && <div className="text-xs text-mute">por 1 KK</div>}
@@ -153,7 +153,7 @@ function ListingPage() {
           </div>
 
           {seller && (
-            <Link href={`/perfil?id=${seller.id}`} className="rounded-3xl border border-line bg-panel p-5 transition hover:border-volt/50">
+            <Link href={`/perfil?id=${seller.id}`} className="rounded-3xl glass p-5 transition hover:border-volt/50">
               <div className="flex items-center gap-3">
                 <Avatar user={seller} size={48} />
                 <div className="min-w-0">

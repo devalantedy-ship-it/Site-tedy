@@ -1,43 +1,53 @@
 "use client";
 
 import Link from "next/link";
-import { Coins, Gem, Sparkles, Star, Swords, UserRound, Wrench } from "lucide-react";
+import { Sparkles, Star } from "lucide-react";
+import { Sprite } from "./Sprite";
 import { categories, type CategoryId, type Listing, type User } from "@/lib/data";
 import { fmtPrice, useMarket } from "@/lib/store";
 
-export const catIcon: Record<CategoryId, typeof Gem> = {
-  pokemon: Swords,
-  item: Gem,
-  char: UserRound,
-  kk: Coins,
-  servico: Wrench,
-};
-
 const catColor: Record<CategoryId, string> = {
-  pokemon: "from-[#ff8a3d] to-[#e2436b]",
-  item: "from-[#7b6cff] to-[#3fb6ff]",
-  char: "from-[#38d6c4] to-[#2b7bd9]",
-  kk: "from-[#ffd23f] to-[#f08a1c]",
-  servico: "from-[#9b8cb8] to-[#5b6487]",
+  pokemon: "from-[#ff8a3d]/35 to-[#e2436b]/25 shadow-[0_0_24px_-6px_#ff8a3d]",
+  item: "from-[#3fb6ff]/35 to-[#7b6cff]/25 shadow-[0_0_24px_-6px_#3fb6ff]",
+  char: "from-[#ff4f5e]/30 to-[#3d7bff]/30 shadow-[0_0_24px_-6px_#3d7bff]",
+  kk: "from-[#ffd23f]/35 to-[#f08a1c]/25 shadow-[0_0_24px_-6px_#ffd23f]",
+  servico: "from-[#b8c4e6]/25 to-[#5b6487]/30 shadow-[0_0_24px_-6px_#b8c4e6]",
 };
 
 export function catLabel(id: CategoryId) {
   return categories.find((c) => c.id === id)?.label ?? id;
 }
 
-export function CatTile({ id, size = 56, shiny }: { id: CategoryId; size?: number; shiny?: boolean }) {
-  const Icon = catIcon[id];
+export function CatTile({ id, size = 56, shiny, bob }: { id: CategoryId; size?: number; shiny?: boolean; bob?: boolean }) {
   return (
     <div
-      className={`relative grid shrink-0 place-items-center rounded-2xl bg-linear-to-br ${catColor[id]} shadow-[inset_0_-3px_0_#0003]`}
+      className={`pixel-corners relative grid shrink-0 place-items-center bg-linear-to-br ${catColor[id]} dots`}
       style={{ width: size, height: size }}
     >
-      <Icon className="text-white drop-shadow" size={size * 0.45} strokeWidth={2.2} />
-      {shiny && (
-        <Sparkles className="absolute -right-1.5 -top-1.5 rounded-full bg-bg p-0.5 text-volt" size={size * 0.36} />
-      )}
+      <Sprite id={id} size={size * 0.72} className={`drop-shadow-[0_2px_0_#0008] ${bob ? "bob" : ""}`} />
+      {shiny && <Sparkles className="absolute right-0.5 top-0.5 text-volt drop-shadow-[0_0_6px_#ffd23f]" size={Math.max(12, size * 0.26)} />}
     </div>
   );
+}
+
+/** Liga o efeito holográfico: brilho segue o mouse e o card inclina um pouco. */
+export function holoHandlers() {
+  return {
+    onMouseMove: (e: React.MouseEvent<HTMLElement>) => {
+      const el = e.currentTarget;
+      const r = el.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width;
+      const y = (e.clientY - r.top) / r.height;
+      el.style.setProperty("--mx", `${x * 100}%`);
+      el.style.setProperty("--my", `${y * 100}%`);
+      el.style.setProperty("--rx", `${(0.5 - y) * 6}deg`);
+      el.style.setProperty("--ry", `${(x - 0.5) * 8}deg`);
+    },
+    onMouseLeave: (e: React.MouseEvent<HTMLElement>) => {
+      e.currentTarget.style.setProperty("--rx", "0deg");
+      e.currentTarget.style.setProperty("--ry", "0deg");
+    },
+  };
 }
 
 export function KindBadge({ kind }: { kind: Listing["kind"] }) {
@@ -97,16 +107,19 @@ export function timeAgo(iso: string) {
   return `há ${mo} ${mo > 1 ? "meses" : "mês"}`;
 }
 
-export function ListingCard({ l }: { l: Listing }) {
+export function ListingCard({ l, i = 0 }: { l: Listing; i?: number }) {
   const { userById } = useMarket();
   const u = userById(l.userId);
+  const accent = l.kind === "venda" ? "from-sell/70" : "from-buy/70";
   return (
     <Link
       href={`/anuncio?id=${l.id}`}
-      className={`rise group flex flex-col gap-3 rounded-2xl border border-line bg-panel p-4 transition hover:-translate-y-0.5 hover:border-volt/50 ${
-        l.status === "concluido" ? "opacity-60" : ""
-      }`}
+      {...holoHandlers()}
+      style={{ animationDelay: `${Math.min(i, 8) * 50}ms` }}
+      className={`rise holo glass group flex flex-col gap-3 overflow-hidden rounded-2xl p-4 ${l.status === "concluido" ? "opacity-55 saturate-50" : ""}`}
     >
+      {l.shiny && l.status !== "concluido" && <span className="shiny-border" />}
+      <span className={`absolute inset-x-0 top-0 h-px bg-linear-to-r ${accent} via-transparent to-transparent`} />
       <div className="flex items-start gap-3">
         <CatTile id={l.category} shiny={l.shiny} />
         <div className="min-w-0 flex-1">
@@ -115,20 +128,22 @@ export function ListingCard({ l }: { l: Listing }) {
             <StatusBadge status={l.status} />
             <span className="text-[11px] text-mute">{l.server}</span>
           </div>
-          <h3 className="line-clamp-2 font-bold leading-snug group-hover:text-volt">{l.title}</h3>
+          <h3 className="line-clamp-2 font-bold leading-snug transition group-hover:text-volt">{l.title}</h3>
         </div>
       </div>
       {(l.level || l.boost != null || l.heldItem) && (
-        <div className="flex flex-wrap gap-1.5 text-[11px] text-mute">
-          {l.level ? <span className="rounded bg-panel-2 px-1.5 py-0.5">Lv {l.level}</span> : null}
-          {l.boost != null ? <span className="rounded bg-panel-2 px-1.5 py-0.5">+{l.boost}</span> : null}
-          {l.heldItem ? <span className="rounded bg-panel-2 px-1.5 py-0.5">{l.heldItem}</span> : null}
+        <div className="flex flex-wrap gap-1.5 font-pixel text-[12px] text-mute">
+          {l.level ? <span className="rounded bg-white/5 px-1.5 py-0.5">LV {l.level}</span> : null}
+          {l.boost != null ? <span className="rounded bg-volt/10 px-1.5 py-0.5 text-volt">+{l.boost}</span> : null}
+          {l.heldItem ? <span className="rounded bg-violet/10 px-1.5 py-0.5 text-violet">{l.heldItem}</span> : null}
         </div>
       )}
-      <div className="mt-auto flex items-end justify-between gap-2">
+      <div className="mt-auto flex items-end justify-between gap-2 border-t border-white/5 pt-3">
         <div>
-          <div className="text-[11px] text-mute">{l.kind === "compra" ? "Paga até" : l.category === "kk" ? "por KK" : "Preço"}</div>
-          <div className="font-pixel text-xl text-volt">{fmtPrice(l.price, l.currency)}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-mute">
+            {l.kind === "compra" ? "Paga até" : l.category === "kk" && l.currency === "R$" ? "por 1 KK" : "Preço"}
+          </div>
+          <div className="glow-text font-pixel text-2xl leading-none text-volt">{fmtPrice(l.price, l.currency)}</div>
         </div>
         <div className="flex items-center gap-1.5 text-xs text-mute">
           <Avatar user={u} size={22} />
