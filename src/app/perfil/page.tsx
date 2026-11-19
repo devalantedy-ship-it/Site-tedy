@@ -1,11 +1,20 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { useMarket } from "@/lib/store";
 import { Avatar, ListingCard, Stars, timeAgo } from "@/components/ui";
 
-export default function ProfilePage() {
-  const { id } = useParams<{ id: string }>();
+export default function Page() {
+  return (
+    <Suspense>
+      <ProfilePage />
+    </Suspense>
+  );
+}
+
+function ProfilePage() {
+  const id = useSearchParams().get("id") ?? "";
   const m = useMarket();
   const u = m.userById(id);
   if (!m.ready) return null;

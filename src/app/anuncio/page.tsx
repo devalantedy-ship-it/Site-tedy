@@ -1,15 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useState } from "react";
 import { ArrowLeft, Eye, Handshake, MessageCircle, Phone, ShieldAlert, Trash2 } from "lucide-react";
 import { fmtPrice, useMarket } from "@/lib/store";
 import { OfferModal } from "@/components/OfferModal";
 import { Avatar, CatTile, KindBadge, ListingCard, Stars, StatusBadge, catLabel, timeAgo } from "@/components/ui";
 
-export default function ListingPage() {
-  const { id } = useParams<{ id: string }>();
+export default function Page() {
+  return (
+    <Suspense>
+      <ListingPage />
+    </Suspense>
+  );
+}
+
+function ListingPage() {
+  const id = useSearchParams().get("id");
   const m = useMarket();
   const router = useRouter();
   const [offerOpen, setOfferOpen] = useState(false);
@@ -31,7 +39,7 @@ export default function ListingPage() {
 
   const needLogin = () => {
     if (m.me) return false;
-    router.push(`/entrar?volta=/anuncio/${l.id}`);
+    router.push(`/entrar?volta=${encodeURIComponent(`/anuncio?id=${l.id}`)}`);
     return true;
   };
 
@@ -145,7 +153,7 @@ export default function ListingPage() {
           </div>
 
           {seller && (
-            <Link href={`/perfil/${seller.id}`} className="rounded-3xl border border-line bg-panel p-5 transition hover:border-volt/50">
+            <Link href={`/perfil?id=${seller.id}`} className="rounded-3xl border border-line bg-panel p-5 transition hover:border-volt/50">
               <div className="flex items-center gap-3">
                 <Avatar user={seller} size={48} />
                 <div className="min-w-0">

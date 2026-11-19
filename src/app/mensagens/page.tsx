@@ -128,7 +128,7 @@ function Chat({ c }: { c: Conversation }) {
         <Link href="/mensagens" className="rounded-lg p-1 text-mute hover:bg-panel-2 md:hidden" aria-label="Voltar">
           <ArrowLeft size={18} />
         </Link>
-        <Link href={`/anuncio/${l.id}`} className="flex min-w-0 flex-1 items-center gap-3">
+        <Link href={`/anuncio?id=${l.id}`} className="flex min-w-0 flex-1 items-center gap-3">
           <CatTile id={l.category} size={40} shiny={l.shiny} />
           <div className="min-w-0">
             <div className="flex items-center gap-1.5">
@@ -140,7 +140,7 @@ function Chat({ c }: { c: Conversation }) {
         </Link>
         <div className="hidden text-right sm:block">
           <div className="font-pixel text-lg text-volt">{fmtPrice(l.price, l.currency)}</div>
-          <Link href={`/perfil/${otherId}`} className="text-xs text-mute hover:text-ink">com {other?.nick}</Link>
+          <Link href={`/perfil?id=${otherId}`} className="text-xs text-mute hover:text-ink">com {other?.nick}</Link>
         </div>
       </div>
 

@@ -61,7 +61,7 @@ function NewListing() {
       ...(isPoke || category === "char" ? { level: Number(level) || undefined } : {}),
       ...(isPoke ? { boost: boost === "" ? undefined : Number(boost), shiny, heldItem: heldItem.trim() || undefined } : {}),
     });
-    if (id) router.push(`/anuncio/${id}`);
+    if (id) router.push(`/anuncio?id=${id}`);
   };
 
   return (

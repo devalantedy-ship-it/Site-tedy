@@ -102,7 +102,7 @@ export function ListingCard({ l }: { l: Listing }) {
   const u = userById(l.userId);
   return (
     <Link
-      href={`/anuncio/${l.id}`}
+      href={`/anuncio?id=${l.id}`}
       className={`rise group flex flex-col gap-3 rounded-2xl border border-line bg-panel p-4 transition hover:-translate-y-0.5 hover:border-volt/50 ${
         l.status === "concluido" ? "opacity-60" : ""
       }`}

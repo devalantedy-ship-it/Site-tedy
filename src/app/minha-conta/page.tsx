@@ -40,7 +40,7 @@ export default function MyAccount() {
             </div>
           </div>
         </div>
-        <Link href={`/perfil/${m.me.id}`} className="text-xs text-volt underline">Ver meu perfil público</Link>
+        <Link href={`/perfil?id=${m.me.id}`} className="text-xs text-volt underline">Ver meu perfil público</Link>
         <form
           className="flex flex-col gap-3"
           onSubmit={(e) => {
