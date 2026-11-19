@@ -76,7 +76,7 @@ function Listings() {
       <h1 className="font-pixel text-3xl">{title}</h1>
       <p className="mt-1 text-sm text-mute">{list.length} resultado{list.length === 1 ? "" : "s"}</p>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-[260px_1fr]">
+      <div className="mt-6 grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[260px_minmax(0,1fr)]">
         <aside className={`${showF ? "flex" : "hidden"} lg:flex flex-col gap-5 self-start rounded-2xl glass p-4 lg:sticky lg:top-20`}>
           <div className="flex items-center gap-2 font-bold">
             <SlidersHorizontal size={16} /> Filtros
@@ -114,7 +114,7 @@ function Listings() {
           </button>
         </aside>
 
-        <div>
+        <div className="@container min-w-0">
           <div className="mb-3 flex justify-between gap-2 lg:justify-end">
             <button onClick={() => setShowF((v) => !v)} className="btn btn-ghost lg:hidden">
               <SlidersHorizontal size={16} /> {showF ? "Esconder filtros" : "Filtros"}
@@ -127,7 +127,7 @@ function Listings() {
             </select>
           </div>
           {list.length ? (
-            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 @xl:grid-cols-2 @4xl:grid-cols-3">
               {list.map((l) => (
                 <ListingCard key={l.id} l={l} />
               ))}

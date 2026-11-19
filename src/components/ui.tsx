@@ -138,7 +138,7 @@ export function ListingCard({ l, i = 0 }: { l: Listing; i?: number }) {
       href={`/anuncio?id=${l.id}`}
       {...holoHandlers()}
       style={{ animationDelay: `${Math.min(i, 8) * 50}ms` }}
-      className={`rise holo glass group flex flex-col gap-3 overflow-hidden rounded-2xl p-4 ${l.status === "concluido" ? "opacity-55 saturate-50" : ""}`}
+      className={`rise holo glass @container group flex h-full flex-col gap-3 overflow-hidden rounded-2xl p-4 ${l.status === "concluido" ? "opacity-55 saturate-50" : ""}`}
     >
       {l.shiny && l.status !== "concluido" && <span className="shiny-border" />}
       <span className={`absolute inset-x-0 top-0 h-px bg-linear-to-r ${accent} via-transparent to-transparent`} />
@@ -161,16 +161,16 @@ export function ListingCard({ l, i = 0 }: { l: Listing; i?: number }) {
           {l.addon ? <span className="rounded bg-buy/10 px-1.5 py-0.5 text-buy">{l.addon}</span> : null}
         </div>
       )}
-      <div className="mt-auto flex items-end justify-between gap-2 border-t border-white/5 pt-3">
-        <div>
+      <div className="mt-auto flex flex-wrap items-end justify-between gap-x-3 gap-y-2 border-t border-white/5 pt-3">
+        <div className="min-w-0">
           <div className="text-[10px] font-bold uppercase tracking-wider text-mute">
             {l.kind === "compra" ? "Paga até" : l.category === "kk" && l.currency === "R$" ? "por 1 KK" : "Preço"}
           </div>
-          <div className="glow-text font-pixel text-2xl leading-none text-volt">{fmtPrice(l.price, l.currency)}</div>
+          <div className="glow-text whitespace-nowrap font-pixel text-xl leading-none text-volt @[19rem]:text-2xl">{fmtPrice(l.price, l.currency)}</div>
         </div>
-        <div className="flex items-center gap-1.5 text-xs text-mute">
+        <div className="flex min-w-0 items-center gap-1.5 text-xs text-mute">
           <Avatar user={u} size={22} />
-          <span className="max-w-24 truncate">{u?.nick}</span>
+          <span className="min-w-0 max-w-28 truncate">{u?.nick}</span>
         </div>
       </div>
     </Link>
