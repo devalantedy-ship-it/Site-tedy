@@ -81,12 +81,13 @@ function ListingPage() {
             </div>
           </div>
 
-          {(l.level || l.boost != null || l.heldItem || l.shiny != null) && (
+          {(l.level || l.boost != null || l.heldItem || l.shiny != null || l.addon) && (
             <dl className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4">
               {l.level ? <Attr k="Level" v={String(l.level)} /> : null}
               {l.boost != null ? <Attr k="Boost" v={`+${l.boost}`} /> : null}
               {l.shiny != null ? <Attr k="Shiny" v={l.shiny ? "Sim" : "Não"} /> : null}
               {l.heldItem ? <Attr k="Held item" v={l.heldItem} /> : null}
+              {l.addon ? <Attr k="Addon" v={l.addon} /> : null}
             </dl>
           )}
 

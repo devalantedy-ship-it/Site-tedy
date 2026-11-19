@@ -20,6 +20,7 @@ export const trainerSprite = (name: string) => `https://play.pokemonshowdown.com
 export const categoryArt = {
   pokemon: artwork(130),
   item: itemSprite("poke-ball"),
+  addon: itemSprite("relic-crown"),
   char: trainerSprite("red"),
   kk: itemSprite("big-nugget"),
   servico: itemSprite("master-ball"),
@@ -40,9 +41,3 @@ export function pokemonNames() {
 
 export const prettyName = (n: string) => n.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
-/** Itens comuns que o vendedor pode escolher pra ilustrar o anúncio de item. */
-export const commonItems = [
-  "fire-stone", "water-stone", "leaf-stone", "thunder-stone", "moon-stone", "sun-stone", "ice-stone", "dusk-stone",
-  "shiny-stone", "dawn-stone", "rare-candy", "master-ball", "ultra-ball", "great-ball", "poke-ball", "leftovers",
-  "choice-band", "life-orb", "lucky-egg", "exp-share", "amulet-coin", "nugget", "big-nugget", "bicycle",
-];

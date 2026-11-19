@@ -5,8 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { categories, servers, type CategoryId, type Currency, type Kind, type Server } from "@/lib/data";
 import { fmtPrice, useMarket } from "@/lib/store";
 import { CatTile, KindBadge } from "@/components/ui";
-import { PokemonPicker } from "@/components/PokemonPicker";
-import { commonItems, itemSprite, prettyName } from "@/lib/poke";
+import { AddonPicker, ItemPicker, PokemonPicker, dexName } from "@/components/PokemonPicker";
 
 export default function Page() {
   return (
@@ -25,7 +24,7 @@ function NewListing() {
   const [category, setCategory] = useState<CategoryId>("pokemon");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [server, setServer] = useState<Server>(m.me?.server ?? "Kanto");
+  const [server, setServer] = useState<Server>(m.me?.server ?? "América do Sul");
   const [price, setPrice] = useState("");
   const [currency, setCurrency] = useState<Currency>("R$");
   const [negotiable, setNegotiable] = useState(true);
@@ -37,6 +36,9 @@ function NewListing() {
   const [heldItem, setHeldItem] = useState("");
   const [dex, setDex] = useState<number | undefined>();
   const [item, setItem] = useState("");
+  const [itemName, setItemName] = useState("");
+  const [addon, setAddon] = useState<string | undefined>();
+  const [autoTitle, setAutoTitle] = useState(false);
 
   useEffect(() => {
     if (m.ready && !m.me) router.replace("/entrar?volta=/anunciar");
@@ -65,6 +67,7 @@ function NewListing() {
       ...(isPoke || category === "char" ? { level: Number(level) || undefined } : {}),
       ...(isPoke ? { dex, boost: boost === "" ? undefined : Number(boost), shiny, heldItem: heldItem.trim() || undefined } : {}),
       ...(category === "item" && item ? { item } : {}),
+      ...(category === "addon" && addon ? { addon, dex } : {}),
     });
     if (id) router.push(`/anuncio?id=${id}`);
   };
@@ -94,7 +97,7 @@ function NewListing() {
 
           <div>
             <div className="mb-2 text-sm font-semibold">Categoria</div>
-            <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
+            <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
               {categories.map((c) => (
                 <button
                   type="button"
@@ -115,32 +118,47 @@ function NewListing() {
             <span className="mb-1 block font-semibold">Título</span>
             <input
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={(e) => {
+                setTitle(e.target.value);
+                setAutoTitle(false);
+              }}
               maxLength={70}
               className="field"
               placeholder={kind === "venda" ? "Ex.: Shiny Charizard +50" : "Ex.: Procuro Gyarados shiny +30"}
             />
           </label>
 
-          {isPoke && <PokemonPicker dex={dex} shiny={shiny} onPick={(d, name) => { setDex(d); if (!title) setTitle((shiny ? "Shiny " : "") + name); }} />}
+          {isPoke && (
+            <PokemonPicker
+              dex={dex}
+              shiny={shiny}
+              onPick={(d, name) => {
+                setDex(d);
+                if (d && (!title || autoTitle)) { setTitle((shiny ? "Shiny " : "") + name); setAutoTitle(true); }
+              }}
+            />
+          )}
           {category === "item" && (
-            <div>
-              <div className="mb-2 text-sm font-semibold">Imagem do item <span className="font-normal text-mute">(opcional)</span></div>
-              <div className="grid grid-cols-6 gap-1.5 sm:grid-cols-8">
-                {commonItems.map((it) => (
-                  <button
-                    type="button"
-                    key={it}
-                    title={prettyName(it)}
-                    onClick={() => setItem(item === it ? "" : it)}
-                    className={`grid aspect-square place-items-center rounded-xl border transition ${item === it ? "border-sell bg-sell/15" : "border-line hover:bg-panel-2"}`}
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={itemSprite(it)} alt={prettyName(it)} className="h-8 w-8 [image-rendering:pixelated]" loading="lazy" />
-                  </button>
-                ))}
-              </div>
-            </div>
+            <ItemPicker
+              item={item || undefined}
+              name={itemName}
+              onPick={(sp, name) => {
+                setItem(sp ?? "");
+                setItemName(name);
+                if (name && (!title || autoTitle)) { setTitle(name); setAutoTitle(true); }
+              }}
+            />
+          )}
+          {category === "addon" && (
+            <AddonPicker
+              addon={addon}
+              dex={dex}
+              onPick={(ad, d) => {
+                setAddon(ad);
+                setDex(d);
+                if (ad && (!title || autoTitle)) { setTitle(`${ad}${d ? " (" + (dexName(d) ?? "") + ")" : ""}`); setAutoTitle(true); }
+              }}
+            />
           )}
           {isPoke && (
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -226,7 +244,7 @@ function NewListing() {
           <div className="mb-2 text-xs font-bold uppercase tracking-wider text-mute">Prévia</div>
           <div className="flex flex-col gap-3 rounded-2xl glass p-4">
             <div className="flex items-start gap-3">
-              <CatTile id={category} size={64} l={{ category, dex: isPoke ? dex : undefined, item: category === "item" ? item || undefined : undefined, shiny: isPoke && shiny }} />
+              <CatTile id={category} size={64} l={{ category, dex: isPoke || category === "addon" ? dex : undefined, item: category === "item" ? item || undefined : undefined, shiny: isPoke && shiny }} />
               <div className="min-w-0">
                 <div className="mb-1 flex items-center gap-1.5">
                   <KindBadge kind={kind} />

@@ -153,11 +153,12 @@ export function ListingCard({ l, i = 0 }: { l: Listing; i?: number }) {
           <h3 className="line-clamp-2 font-bold leading-snug transition group-hover:text-volt">{l.title}</h3>
         </div>
       </div>
-      {(l.level || l.boost != null || l.heldItem) && (
+      {(l.level || l.boost != null || l.heldItem || l.addon) && (
         <div className="flex flex-wrap gap-1.5 font-pixel text-[12px] text-mute">
           {l.level ? <span className="rounded bg-white/5 px-1.5 py-0.5">LV {l.level}</span> : null}
           {l.boost != null ? <span className="rounded bg-volt/10 px-1.5 py-0.5 text-volt">+{l.boost}</span> : null}
           {l.heldItem ? <span className="rounded bg-violet/10 px-1.5 py-0.5 text-violet">{l.heldItem}</span> : null}
+          {l.addon ? <span className="rounded bg-buy/10 px-1.5 py-0.5 text-buy">{l.addon}</span> : null}
         </div>
       )}
       <div className="mt-auto flex items-end justify-between gap-2 border-t border-white/5 pt-3">

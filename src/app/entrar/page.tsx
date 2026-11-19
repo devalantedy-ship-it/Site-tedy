@@ -20,7 +20,7 @@ function Login() {
   const router = useRouter();
   const volta = useSearchParams().get("volta") || "/";
   const [nick, setNick] = useState("");
-  const [server, setServer] = useState<Server>("Kanto");
+  const [server, setServer] = useState<Server>("América do Sul");
   const [wa, setWa] = useState("");
 
   const go = (n: string, s: Server, w?: string) => {

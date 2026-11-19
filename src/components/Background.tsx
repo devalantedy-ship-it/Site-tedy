@@ -1,18 +1,17 @@
 "use client";
 
-// Fundo do site: a arte do Gyarados na onda (public/bg/gyarados-onda.jpg), fixa, com um zoom bem lento.
-// Por cima: Magikarps pulando de vez em quando e um degradê pro azul do mar, pra leitura do conteúdo.
+// Fundo do site: a arte do porto com os Pokémon (public/bg/porto.jpg), fixa, com um zoom bem lento.
+// Por cima: Wingulls voando e um degradê pro azul do mar, pra leitura do conteúdo.
 
 import { useEffect, useState } from "react";
 import { pokeSprite } from "@/lib/poke";
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
-const jumps = [
-  { left: "12%", bottom: "18%", delay: 0, dur: 7, shiny: false },
-  { left: "68%", bottom: "24%", delay: 2.6, dur: 8, shiny: true },
-  { left: "40%", bottom: "12%", delay: 5.1, dur: 9, shiny: false },
-  { left: "86%", bottom: "14%", delay: 3.8, dur: 7.5, shiny: false },
+const flyers = [
+  { top: "8%", delay: 0, dur: 26, size: 72 },
+  { top: "18%", delay: -9, dur: 34, size: 56 },
+  { top: "4%", delay: -18, dur: 30, size: 48 },
 ];
 
 export function Background() {
@@ -31,19 +30,19 @@ export function Background() {
         style={{ transform: `translateY(${Math.min(y, 1200) * -0.08}px)` }}
       >
         <div
-          className="kenburns absolute -inset-[4%] bg-cover bg-[center_35%]"
-          style={{ backgroundImage: `url(${BASE}/bg/gyarados-onda.jpg)` }}
+          className="kenburns absolute -inset-[4%] bg-cover bg-[center_60%]"
+          style={{ backgroundImage: `url(${BASE}/bg/porto.jpg)` }}
         />
       </div>
 
-      {/* Magikarps pulando */}
-      {jumps.map((j, i) => (
+      {/* Wingulls voando pelo céu */}
+      {flyers.map((f, i) => (
         <img
           key={i}
-          src={pokeSprite(129, { shiny: j.shiny })}
+          src={pokeSprite(278)}
           alt=""
-          className="karp absolute w-14 [image-rendering:pixelated]"
-          style={{ left: j.left, bottom: j.bottom, animationDelay: `${j.delay}s`, animationDuration: `${j.dur}s` }}
+          className="gull absolute [image-rendering:pixelated]"
+          style={{ top: f.top, width: f.size, animationDelay: `${f.delay}s`, animationDuration: `${f.dur}s` }}
         />
       ))}
 

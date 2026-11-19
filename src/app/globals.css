@@ -21,6 +21,10 @@ html {
   color-scheme: dark;
 }
 
+html, body {
+  overflow-x: clip;
+}
+
 body {
   background: var(--color-bg);
   color: var(--color-ink);
@@ -40,6 +44,14 @@ body {
 @keyframes kenburns {
   from { transform: scale(1) translateX(0); }
   to { transform: scale(1.08) translateX(-1.5%); }
+}
+
+/* Wingull atravessando o céu (sprite olha pra esquerda, então vai da direita pra esquerda) */
+.gull { right: -120px; animation: gull 30s linear infinite; }
+@keyframes gull {
+  from { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(calc(-50vw - 60px)) translateY(18px); }
+  to { transform: translateX(calc(-100vw - 240px)) translateY(0); }
 }
 
 /* Magikarp pulando da água: fica escondido a maior parte do tempo e dá um salto em arco */
@@ -254,7 +266,48 @@ body {
 .pop { animation: pop 0.25s cubic-bezier(.2,.8,.2,1); }
 
 @media (prefers-reduced-motion: reduce) {
-  .rise, .pop, .float, .float-2, .float-3, .bob, .marquee, .kenburns, .karp, .text-shine, .shiny-border {
+  .rise, .pop, .float, .float-2, .float-3, .bob, .marquee, .kenburns, .karp, .gull, .text-shine, .shiny-border {
     animation: none !important;
   }
+}
+
+/* ---------- aparecer ao rolar (componente Reveal) ---------- */
+.reveal {
+  transition: opacity 0.7s cubic-bezier(.2,.8,.2,1), transform 0.7s cubic-bezier(.2,.8,.2,1);
+}
+.reveal[data-state="idle"] { opacity: 0; }
+.reveal[data-state="idle"][data-reveal="up"] { transform: translateY(40px); }
+.reveal[data-state="idle"][data-reveal="left"] { transform: translateX(-50px); }
+.reveal[data-state="idle"][data-reveal="right"] { transform: translateX(50px); }
+.reveal[data-state="idle"][data-reveal="zoom"] { transform: scale(0.92); }
+.reveal[data-state="done"] { transition: none; opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
+
+/* imagem inclinada com cartão de trás (seções alternadas) */
+.tilt-stack { position: relative; }
+.tilt-stack::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 1.75rem;
+  background: var(--back, #f37665);
+  transform: rotate(var(--back-r, -6deg)) translate(-10px, 10px);
+  transition: transform 0.5s cubic-bezier(.2,.8,.2,1);
+}
+.tilt-stack > * { position: relative; transform: rotate(var(--front-r, 3deg)); transition: transform 0.5s cubic-bezier(.2,.8,.2,1); }
+.tilt-stack:hover::before { transform: rotate(calc(var(--back-r, -6deg) * 1.4)) translate(-14px, 14px); }
+.tilt-stack:hover > * { transform: rotate(0deg) scale(1.02); }
+
+/* passo ativo da lista de verbos */
+.step { transition: color .3s, transform .3s, opacity .3s; opacity: .35; }
+.step[data-on="true"] { opacity: 1; transform: translateX(8px); }
+
+/* celular: sem inclinação forte (evita cortar preço e rolar pro lado) */
+@media (max-width: 640px) {
+  .tilt-stack > * { transform: none !important; }
+  .tilt-stack::before { transform: rotate(-3deg) translate(-6px, 8px) !important; }
+  .reveal[data-state="idle"][data-reveal="left"],
+  .reveal[data-state="idle"][data-reveal="right"] { transform: translateY(30px); }
 }
